@@ -1,7 +1,7 @@
 var predictions = null;
 
 function roundToTwo(num) {
-    num = +(Math.round(num + "e+2")  + "e-2")
+    num = +(Math.round(num + "e+2") + "e-2")
     if (isNaN(num)) {
         // console.log(num);
         return 0.0;
@@ -17,7 +17,7 @@ function emptyResult() {
 }
 
 function appendImage(name, base64_img, imgId) {
-    let urlImage = (base64_img === null) ? 'assets/face-not-found.jpg': `data:image/jp;base64,${base64_img}`;
+    let urlImage = (base64_img === null) ? 'assets/face-not-found.jpg' : `data:image/jp;base64,${base64_img}`;
     $('#img-list').append(`
     <li>
         <a href="#" class="preventHref" style="background-image: url('${urlImage}')" data-img-id="${imgId}"></a>
@@ -55,12 +55,12 @@ function getImagePrediction(imgId) {
 
 
 $(document).ready(function() {
-    
-	$(document).on('click', '.preventHref', function () {
+
+    $(document).on('click', '.preventHref', function() {
         return false;
     });
 
-    $(document).on('click', '#img-list > li > a', function () {
+    $(document).on('click', '#img-list > li > a', function() {
         let imgId = $(this).data("img-id");
         getImagePrediction(imgId);
     });
@@ -69,7 +69,7 @@ $(document).ready(function() {
     //     getImagePrediction(1);
     // });
 
-    $("#img-form").on("submit", function (event) {
+    $("#img-form").on("submit", function(event) {
         event.preventDefault();
         emptyResult();
         $("#submit").attr("disabled", true);
@@ -85,7 +85,7 @@ $(document).ready(function() {
 
         // AJAX request
         $.ajax({
-            url: 'http://127.0.0.1:5000/api/predict',
+            url: 'http://34.133.146.198/api/predict',
             type: 'post',
             data: form_data,
             dataType: 'json',
@@ -94,9 +94,9 @@ $(document).ready(function() {
             success: function(response) {
 
                 console.log(response)
-                
+
                 predictions = response.predictions;
-                predictions.forEach((element, idx) =>{
+                predictions.forEach((element, idx) => {
                     let name = element.name;
                     let base64_img = element.image;
                     // console.log(name);
@@ -111,9 +111,9 @@ $(document).ready(function() {
                     let confident = roundToTwo(element[1] * 100);
                     appendSummary(name, confident)
                 });
-                
+
             },
-            complete: function () {
+            complete: function() {
                 $("#submit").attr("disabled", false);
             }
         });
@@ -123,5 +123,5 @@ $(document).ready(function() {
     //     event.preventDefault();   
     // });
 
-    
+
 });
